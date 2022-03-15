@@ -1,6 +1,9 @@
 #include<iostream>
 #include <stdlib.h>
+
 using namespace std;
+
+
 void movmentW(int x, int y, string campo[15][40], int numrandom1, int numrandom2 )
 {
 
