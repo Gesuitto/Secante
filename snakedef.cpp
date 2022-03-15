@@ -26,5 +26,5 @@ int main()
 {
 	setlocale(LC_ALL,"");
 
-
+	// Filippo è un ciuccellone
 }
