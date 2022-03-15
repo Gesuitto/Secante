@@ -135,14 +135,17 @@ int main()
 	for(int i=0; i<40;i++)
 	{
 		campo[0][i];
+		campo[14][i];
 	}
-	for(int i=0; i<40;i++)
+	for(int i=0; i<15;i++)
 	{
-		campo[0][i];
+		campo[i][0];
+		campo[i][39];
+	
 	}
-	for(int j=0;j<20;j++)
+	for(int j=0;j<15;j++)
 	{
-		for(int i=0; i<20;i++)
+		for(int i=0; i<40;i++)
 		{
 		        if(campo[j][i]=="#"|| campo[j][i]=="|"|| campo[j][i]=="ð")
 		            cout<<campo[j][i];
