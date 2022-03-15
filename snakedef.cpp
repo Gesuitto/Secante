@@ -134,13 +134,13 @@ int main()
 	campo[numrandom1][numrandom2]="ð";
 	for(int i=0; i<40;i++)
 	{
-		campo[0][i];
-		campo[14][i];
+		campo[0][i]="#";
+		campo[14][i]="#";
 	}
 	for(int i=0; i<15;i++)
 	{
-		campo[i][0];
-		campo[i][39];
+		campo[i][0]="#";
+		campo[i][39]="#";
 	
 	}
 	for(int j=0;j<15;j++)
