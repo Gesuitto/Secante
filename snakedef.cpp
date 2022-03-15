@@ -1,14 +1,15 @@
 #include<iostream>
 #include <stdlib.h>
+#include<locate>
 using namespace std;
 void movmentW(int x, int y, string campo[15][40], int numrandom1, int numrandom2 )
 {
 
 	campo[y][x]=" ";
 	campo[y-1][x]="|"; 
-	for(int j=0;j<20;j++)
+	for(int j=0;j<15;j++)
 	{
-		for(int i=0; i<20;i++)
+		for(int i=0; i<40;i++)
 		{
 		  if(campo[j][i]=="#"|| campo[j][i]=="|")
 		        cout<<campo[j][i];
@@ -19,14 +20,14 @@ void movmentW(int x, int y, string campo[15][40], int numrandom1, int numrandom2
 	}
     
 }
-void movmentS(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
+void movmentS(int x, int y, string campo[15][40], int numrandom1, int numrandom2 )
 {
 
 	campo[y][x]=" ";
 	campo[y+1][x]="|"; 
-	for(int j=0;j<20;j++)
+	for(int j=0;j<15;j++)
 	{
-		for(int i=0; i<20;i++)
+		for(int i=0; i<40;i++)
 		{
 		  if(campo[j][i]=="#"|| campo[j][i]=="|")
 		        cout<<campo[j][i];
@@ -37,14 +38,14 @@ void movmentS(int x, int y, string campo[20][20], int numrandom1, int numrandom2
 	}
     
 }
-void movmentA(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
+void movmentA(int x, int y, string campo[15][40], int numrandom1, int numrandom2 )
 {
 
 	campo[y][x]=" ";
 	campo[y][x-1]="|"; 
-	for(int j=0;j<20;j++)
+	for(int j=0;j<15;j++)
 	{
-		for(int i=0; i<20;i++)
+		for(int i=0; i<40;i++)
 		{
 		  if(campo[j][i]=="#"|| campo[j][i]=="|")
 		        cout<<campo[j][i];
@@ -55,14 +56,14 @@ void movmentA(int x, int y, string campo[20][20], int numrandom1, int numrandom2
 	}
     
 }
-void movmentD(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
+void movmentD(int x, int y, string campo[15][40], int numrandom1, int numrandom2 )
 {
 
 	campo[y][x]=" ";
 	campo[y][x+1]="|"; 
-	for(int j=0;j<20;j++)
+	for(int j=0;j<15;j++)
 	{
-		for(int i=0; i<20;i++)
+		for(int i=0; i<40;i++)
 		{
 		  if(campo[j][i]=="#"|| campo[j][i]=="|")
 		        cout<<campo[j][i];
@@ -73,9 +74,9 @@ void movmentD(int x, int y, string campo[20][20], int numrandom1, int numrandom2
 	}
     
 }
-bool gameover(string campo[20][20])
+bool gameover(string campo[15][40])
 {
-	for(int i=0; i<20;i++)
+	for(int i=0; i<40;i++)
 	{
 		if(campo[0][i]!="#" ||campo[i][0]!="#")  
 		{
@@ -84,7 +85,7 @@ bool gameover(string campo[20][20])
 		else
 		{
 		
-			if(campo[19][i]!="#" || campo[i][19]!="#")
+			if(campo[14][i]!="#" || campo[i][39]!="#")
 			{
 				return true;
 			}
@@ -95,23 +96,23 @@ bool gameover(string campo[20][20])
 		}
 	}
 }
-bool controllomela1(string campo[20][20], int num, int num2)
+bool controllomela1(string campo[15][40], int num, int num2)
 {
     if(campo[num][num2]!="ð")
         return true;
     else
         return false;
 }
-void nuovamela(string campo[20][20])
+void nuovamela(string campo[15][40])
 {
 	int numrandom1; //mela riga
-	numrandom1= rand()%19;
+	numrandom1= rand()%14;
 	int numrandom2; //mela riga
-	numrandom2= rand()%19;
+	numrandom2= rand()%40;
 	campo[numrandom1][numrandom2]="ð";
-	for(int j=0;j<20;j++)
+	for(int j=0;j<15;j++)
 	{
-		for(int i=0; i<20;i++)
+		for(int i=0; i<40;i++)
 		{
 		    if(j==numrandom1 && i==numrandom2)
 		        cout<<campo[j][i];
@@ -121,22 +122,23 @@ void nuovamela(string campo[20][20])
 }
 int main()
 {
-    string campo[20][20];
+	setlocate(LC_ALL,"");
+    string campo[15][40];
     int x=9;
 	int y=9;
 	int j;
 	int numrandom1; //mela riga
-	numrandom1= rand()%19;
+	numrandom1= rand()%14;
 	int numrandom2; //mela riga
-	numrandom2= rand()%19;
+	numrandom2= rand()%39;
 	campo[numrandom1][numrandom2]="ð";
-	for(int i=0; i<20;i++)
+	for(int i=0; i<40;i++)
 	{
-		campo[0][i]="#";
-		campo[i][0]="#";
-		campo[19][i]="#";
-		campo[i][19]="#";
-		campo[9][9]="|";
+		campo[0][i];
+	}
+	for(int i=0; i<40;i++)
+	{
+		campo[0][i];
 	}
 	for(int j=0;j<20;j++)
 	{
