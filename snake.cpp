@@ -1,9 +1,9 @@
-#include<iostream>
-#include<locale>
-#include<windows.h>
-#include<stdio.h>
+#include <iostream>
+#include <locale>
+#include <windows.h>
+#include <stdio.h>
 #include <string>
-#include<conio.h>
+#include <conio.h>
 #include <stdlib.h>
 #include <thread>
 #include <future>
@@ -19,7 +19,7 @@ void matrice(string matrix[15][40]) {
 		matrix[i][39] = "#";
 	}
         	
-    	for (int i = 0; i < 40; i++)
+    for (int i = 0; i < 40; i++)
 	{
 		matrix[0][i]="#";
 		matrix[14][i]="#";
@@ -97,10 +97,10 @@ void movimento(string matrix[15][40], char mossa, int & x, int & y)
 	{
 		for (int j = 0; j <40; j++)
 			matrix[i][j] = " ";
-       		matrix[i][0] = "#";
-       		matrix[i][39] = "#";
+   		matrix[i][0] = "#";
+   		matrix[i][39] = "#";
 	}
-    	for (int i = 0; i < 40; i++)
+    for (int i = 0; i < 40; i++)
 	{
 		matrix[0][i]="#";
 		matrix[14][i]="#";
@@ -109,7 +109,7 @@ void movimento(string matrix[15][40], char mossa, int & x, int & y)
 	if(mossa=='w')
 	{
 		matrix[x-1][y]="x";
-		x=x-1;
+		x--;
 	}
 	else if(mossa=='s')
 	{
@@ -119,7 +119,7 @@ void movimento(string matrix[15][40], char mossa, int & x, int & y)
 	else if(mossa=='a')
 	{
 		matrix[x][y-1]="x";
-		y=y-1;
+		y--;
 	}
 	else if(mossa=='d')
 	{
