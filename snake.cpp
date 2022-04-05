@@ -13,20 +13,18 @@ using namespace std;
 void matrice(string matrix[15][40]) {
 	for (int i = 0; i <15; i++)
 	{
-        for (int j = 0; j <40; j++)
-        {
-        	matrix[i][j] = " ";
-       		matrix[i][0] = "#";
-       		matrix[i][39] = "#";
-		}
+		for (int j = 0; j <40; j++)
+			matrix[i][j] = " ";
+		matrix[i][0] = "#";
+		matrix[i][39] = "#";
 	}
         	
-    for (int i = 0; i < 40; i++)
+    	for (int i = 0; i < 40; i++)
 	{
 		matrix[0][i]="#";
 		matrix[14][i]="#";
 	}
-    matrix[8][15]="x";
+	matrix[8][15]="x";
 }
 
 
@@ -97,18 +95,17 @@ void movimento(string matrix[15][40], char mossa, int & x, int & y)
 {
 	for (int i = 0; i <15; i++)
 	{
-        for (int j = 0; j <40; j++)
-        {
-        	matrix[i][j] = " ";
+		for (int j = 0; j <40; j++)
+			matrix[i][j] = " ";
        		matrix[i][0] = "#";
        		matrix[i][39] = "#";
-		}
 	}
-    for (int i = 0; i < 40; i++)
+    	for (int i = 0; i < 40; i++)
 	{
 		matrix[0][i]="#";
 		matrix[14][i]="#";
 	}
+
 	if(mossa=='w')
 	{
 		matrix[x-1][y]="x";
