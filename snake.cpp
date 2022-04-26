@@ -98,6 +98,14 @@ void nuovamela(string campo[20][20], int &numrandom1, int &numrandom2)
     numrandom2= rand()%18;
     campo[numrandom1][numrandom2]="p";
 }
+
+string inputMove() {
+	string move;
+	if (cin >> move) 
+        return move;
+}
+
+
 int main()
 {
     string campo[20][20];
@@ -134,8 +142,12 @@ int main()
     while(gameover(campo)==true) //cin
     {
 
-        cin>>num;
-         system("cls");
+        auto input = async(launch::async, inputMove);
+        system("cls");
+        while (input.wait_for(0.15) != std::future_status::ready) {
+            // Si muove da solo
+        }
+        num = input.get();
         if(num=="w")
         {
             movmentW(x, y, campo, numrandom1, numrandom2);
@@ -167,6 +179,7 @@ int main()
         }
         if(controllomela1(campo, numrandom1, numrandom2)==true)
             nuovamela(campo, numrandom1, numrandom2);
+       
     }
     cout<<"gameover";   
 }
