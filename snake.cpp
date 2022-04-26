@@ -1,150 +1,172 @@
-#include <iostream>
-#include <locale>
-#include <windows.h>
-#include <stdio.h>
-#include <string>
-#include <conio.h>
+#include<iostream>
 #include <stdlib.h>
-#include <thread>
-#include <future>
 using namespace std;
-
-
-void matrice(string matrix[15][40]) {
-	for (int i = 0; i <15; i++)
-	{
-		for (int j = 0; j <40; j++)
-			matrix[i][j] = " ";
-		matrix[i][0] = "#";
-		matrix[i][39] = "#";
-	}
-        	
-    for (int i = 0; i < 40; i++)
-	{
-		matrix[0][i]="#";
-		matrix[14][i]="#";
-	}
-	matrix[8][15]="x";
-}
-
-
-void stampa(string matrix[15][40])
+void movmentW(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
 {
-	for (int i = 0; i < 15; i++)
-	{
-		for (int j = 0; j < 40; j++)
-			cout << matrix[i][j];
-		cout << endl;
-	}
-}
 
+    campo[y][x]=" ";
+    campo[y-1][x]="a"; 
+    for(int j=0;j<20;j++)
+    {
+        for(int i=0; i<20;i++)
+        {
+          if(campo[j][i]=="#"|| campo[j][i]=="a"|| campo[j][i]=="p")
+                cout<<campo[j][i];
+          else
+                cout<<" ";
+        }       
+        cout<<endl;
+    }
+    
+}
+void movmentS(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
+{
 
-int colore ()
-{
-	string c;
-	cout<<"inserisci il colore che desideri"<<endl;
-	cin>> c;
-	while(c!="nero"&&c!="blu"&&c!="verde"&&c!="cyano"&&c!="rosso"&&c!="viola"&&c!="giallo"&&c!="bianco"&&c!="grigio"&&c!="blufluo"&&c!="verdefluo"&&c!="cyanofluo"&&c!="rossofluo"&&c!="violafluo"&&c!="giallofluo")
-	{
-		cout<<"mi dispiace questo colore non è disponibile, inserirne un altro"<<endl;
-		cin>>c;
-	}
-	if(c=="nero")
-		return 0;
-	if(c=="blu")
-		return 1;
-	if(c=="verde")
-		return 2;
-	if(c=="cyano")
-		return 3;
-	if(c=="rosso")
-		return 4;
-	if(c=="viola")
-		return 5;
-	if(c=="giallo")
-		return 6;
-	if(c=="bianco")
-		return 7;
-	if(c=="grigio")
-		return 8;
-	if(c=="blufluo")
-		return 9;
-	if(c=="verdefluo")
-		return 10;
-	if(c=="cyanofluo")
-		return 11;
-	if(c=="rossofluo")
-		return 12;
-	if(c=="violafluo")
-		return 13;
-	if(c=="giallofluo")
-		return 14;
+    campo[y][x]=" ";
+    campo[y+1][x]="a"; 
+    for(int j=0;j<20;j++)
+    {
+        for(int i=0; i<20;i++)
+        {
+          if(campo[j][i]=="#"|| campo[j][i]=="a"|| campo[j][i]=="p")
+                cout<<campo[j][i];
+          else
+                cout<<" ";
+        }       
+        cout<<endl;
+    }
+    
 }
-char inmossa()
+void movmentA(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
 {
-	char mossa;
-	if(cin>>mossa)
-	return mossa;
-}
-void selector(unsigned short color)
-{
-	HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hCon,color);
-}
-void movimento(string matrix[15][40], char mossa, int & x, int & y)
-{
-	for (int i = 0; i <15; i++)
-	{
-		for (int j = 0; j <40; j++)
-			matrix[i][j] = " ";
-   		matrix[i][0] = "#";
-   		matrix[i][39] = "#";
-	}
-    for (int i = 0; i < 40; i++)
-	{
-		matrix[0][i]="#";
-		matrix[14][i]="#";
-	}
 
-	if(mossa=='w')
-	{
-		matrix[x-1][y]="x";
-		x--;
-	}
-	else if(mossa=='s')
-	{
-		matrix[x+1][y]="x";
-		x++;
-	}
-	else if(mossa=='a')
-	{
-		matrix[x][y-1]="x";
-		y--;
-	}
-	else if(mossa=='d')
-	{
-		matrix[x][y+1]="x";
-		y++;
-	}
+    campo[y][x]=" ";
+    campo[y][x-1]="a"; 
+    for(int j=0;j<20;j++)
+    {
+        for(int i=0; i<20;i++)
+        {
+          if(campo[j][i]=="#"|| campo[j][i]=="a" || campo[j][i]=="p")
+                cout<<campo[j][i];
+          else
+                cout<<" ";
+        }       
+        cout<<endl;
+    }
+    
 }
+void movmentD(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
+{
 
+    campo[y][x]=" ";
+    campo[y][x+1]="a"; 
+    for(int j=0;j<20;j++)
+    {
+        for(int i=0; i<20;i++)
+        {
+          if(campo[j][i]=="#"|| campo[j][i]=="a"|| campo[j][i]=="p")
+                cout<<campo[j][i];
+          else
+                cout<<" ";
+        }       
+        cout<<endl;
+    }
+    
+}
+bool gameover(string matrix[20][20]) {
+    bool controllo=true;
+    for (int i = 0; i <19; i++)
+    {
+        for (int j = 0; j <19; j++)
+        if(matrix[i][0] == "a" ||     matrix[i][19] == "a" || matrix[0][j]=="a" || matrix[19][j]=="a")
+        {
+            controllo=false;
+        }
+    }
+    return controllo;
+    }
+bool controllomela1(string campo[20][20], int &num, int &num2)
+{
+    if(campo[num][num2]!="p")
+        return true;
+    else
+        return false;
+}
+void nuovamela(string campo[20][20], int &numrandom1, int &numrandom2)
+{
+    numrandom1= rand()%18;
+    numrandom2= rand()%18;
+    campo[numrandom1][numrandom2]="p";
+}
 int main()
 {
-	int x=8,y=15;
-	setlocale(LC_ALL,"");
-	selector(colore());
-	string campo[15][40];
-	matrice(campo);
-	stampa(campo);
-	while(true)
-	{
-		using namespace std::literals;
-		auto input = std::async(std::launch::async, inmossa);
-		while (input.wait_for(0.1s) != std::future_status::ready)
-		{
-			system("cls");
-			stampa(campo);
-		}
-		movimento(campo,input.get(),x, y);
-	}
+    string campo[20][20];
+    int x=9;
+    int y=9;
+    int j;
+    int numrandom1; //mela riga
+    numrandom1= rand()%18;
+    int numrandom2; //mela riga
+    numrandom2= rand()%18;
+    for(int i=0; i<20;i++)
+    {
+        campo[0][i]="#";
+        campo[i][0]="#";
+        campo[19][i]="#";
+        campo[i][19]="#";
+        campo[9][9]="a";
+    }
+    campo[numrandom1][numrandom2]="p";
+    for(int j=0;j<20;j++)
+    {
+        for(int i=0; i<20;i++)
+        {
+                if(campo[j][i]=="#"|| campo[j][i]=="a"|| campo[j][i]=="p")
+                    cout<<campo[j][i];
+                else
+                    cout<<" ";
+        }    
+        cout<<endl;
+    }
+    string num;
+    
+
+    while(gameover(campo)==true) //cin
+    {
+
+        cin>>num;
+         system("cls");
+        if(num=="w")
+        {
+            movmentW(x, y, campo, numrandom1, numrandom2);
+            y=y-1;
+        }
+        else
+        {
+            if(num=="s")
+            {
+                movmentS(x, y, campo, numrandom1, numrandom1);
+                y=y+1;
+            }
+            else
+            {
+                if(num=="a")
+                {
+                    movmentA(x, y, campo, numrandom1, numrandom1);
+                    x=x-1;
+                }
+                else
+                {
+                    if(num=="d")
+                    {
+                        movmentD(x, y, campo, numrandom1, numrandom1);
+                        x=x+1;
+                    }
+                }
+            }
+        }
+        if(controllomela1(campo, numrandom1, numrandom2)==true)
+            nuovamela(campo, numrandom1, numrandom2);
+    }
+    cout<<"gameover";   
 }
