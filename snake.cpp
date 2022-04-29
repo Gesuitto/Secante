@@ -15,78 +15,62 @@ bool gameover(string matrix[20][20]) {
     for (int i = 0; i <20; i++) {
         if (matrix[i][0] == SNAKE || matrix[i][19] == SNAKE)
             return false;
-    }
-    for (int j = 0; j<20; j++) {
-        if (matrix[0][j]==SNAKE || matrix[19][j]==SNAKE)
+        if (matrix[0][i] == SNAKE || matrix[19][i] == SNAKE)
             return false;
     }
     return true;
 }
 
 
-bool appleCheck(string campo[20][20], int x, int y) {
-    return (campo[x][y] == APPLE);
+bool appleCheck(string field[20][20], int x, int y) {
+    return (field[x][y] == APPLE);
 }
 
 
-void addApple(string campo[20][20], int x, int y) {
+void addApple(string field[20][20], int x, int y) {
     int a, b;
     do {
         a = 1+rand()%17;
         b = 1+rand()%17;
     } while (a == x && b == y);
-    campo[a][b] = APPLE;
+    field[a][b] = APPLE;
 }
 
 
-void movimento(string matrix[][20], char direzione, int & x, int & y) {
-    for (int i = 0; i <20; i++) {
-        for (int j = 0; j <20; j++) {
-            if(matrix[i][j]==SNAKE)
-                matrix[i][j]=" ";
-        }
-        matrix[i][0] = BORDER;
-        matrix[i][19] = BORDER;
-    }
+void move(string matrix[][20], char direction, int & x, int & y) {
     matrix[x][y] = " ";
-    for (int i = 0; i < 20; i++)
-    {
-        matrix[0][i]=BORDER;
-        matrix[19][i]=BORDER;
-    }
-
-    // Muovo a seconda della direzione
-    if(direzione=='w') {
+    if (direction == 'w') {
         x--;
-        if(appleCheck(matrix, x, y)==true)
+        if (appleCheck(matrix, x, y))
             addApple(matrix, x, y);
         matrix[x][y]=SNAKE;
-    } else if(direzione=='s') {
+    } else if (direction == 's') {
         x++;
-        if(appleCheck(matrix, x, y)==true)
+        if(appleCheck(matrix, x, y))
             addApple(matrix, x, y);
         matrix[x][y]=SNAKE;
-    } else if(direzione=='a') {
+    } else if (direction == 'a') {
         y--;
-        if(appleCheck(matrix, x, y)==true)
+        if(appleCheck(matrix, x, y))
             addApple(matrix, x, y);
         matrix[x][y]=SNAKE;
-    } else if(direzione=='d') {
+    } else if (direction == 'd') {
         y++;
-        if(appleCheck(matrix, x, y)==true)
+        if(appleCheck(matrix, x, y))
             addApple(matrix, x, y);
         matrix[x][y]=SNAKE;
     }
 }
 
-string inputMossa() {
-    string mossa;
-    if (cin >> mossa)
-        return mossa;
+
+string inputMove() {
+    string move;
+    if (cin >> move)
+        return move;
 }
 
 
-void stampa(string m[][20]) {
+void print(string m[][20]) {
     system("cls");
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 20; j++)
@@ -96,50 +80,46 @@ void stampa(string m[][20]) {
 }
 
 
-void cambiaDirezione(char & direzione, string mossa) {
-    if (mossa == "w")
-        direzione = 'w';
-    else if (mossa == "s")
-        direzione = 's';
-    else if (mossa == "a")
-        direzione = 'a';
-    else if (mossa == "d")
-        direzione = 'd';
+void changeDirection(char & direction, string move) {
+    if (move == "w")
+        direction = 'w';
+    else if (move == "s")
+        direction = 's';
+    else if (move == "a")
+        direction = 'a';
+    else if (move == "d")
+        direction = 'd';
 }
 
 
 int main() {
     srand(time(NULL));
-    string campo[20][20];
+    string field[20][20];
     int x=9;
     int y=9;
-    char direzione='w'; // Variabile che ha il valore w quando si muove in alto, s quando si muove in basso, a quando si muove a sinistra, d quando si muove a destra
+    char direction='w';
     for (int i = 0; i <20; i++) {
         for (int j = 0; j <20; j++)
-            campo[i][j]=" ";
+            field[i][j]=" ";
     }
-    for(int i=0; i<20;i++) {
-        campo[0][i]=BORDER;
-        campo[i][0]=BORDER;
-        campo[19][i]=BORDER;
-        campo[i][19]=BORDER;
-        campo[x][y]=SNAKE;
+    for (int i=0; i<20;i++) {
+        field[0][i]=BORDER;
+        field[i][0]=BORDER;
+        field[19][i]=BORDER;
+        field[i][19]=BORDER;
+        field[x][y]=SNAKE;
     }
 
-    // Genero la prima mela
-    addApple(campo, x, y);
-    stampa(campo);
-    string num;
+    addApple(field, x, y);
+    print(field);
 
-    while(gameover(campo)==true) {
-	    auto input = std::async(std::launch::async, inputMossa);
-        system("cls");
+    while(gameover(field)) {
+	    auto input = std::async(std::launch::async, inputMove);
 		using namespace std::literals;
 		while (input.wait_for(0.2s) != std::future_status::ready) {
-			movimento(campo, direzione, x, y);
-            stampa(campo);
+			move(field, direction, x, y);
+            print(field);
 		}
-		num = input.get();
-        cambiaDirezione(direzione, num);
+        changeDirection(direction, input.get());
     }
 }
