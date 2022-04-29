@@ -1,78 +1,13 @@
-#include<iostream>
+#include <iostream>
+#include <thread>
+#include <future>
+#include <chrono>
+#include <time.h>
 #include <stdlib.h>
 using namespace std;
-void movmentW(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
-{
+// g++ snake.cpp -o snake.exe -std=c++2a
 
-    campo[y][x]=" ";
-    campo[y-1][x]="a"; 
-    for(int j=0;j<20;j++)
-    {
-        for(int i=0; i<20;i++)
-        {
-          if(campo[j][i]=="#"|| campo[j][i]=="a"|| campo[j][i]=="p")
-                cout<<campo[j][i];
-          else
-                cout<<" ";
-        }       
-        cout<<endl;
-    }
-    
-}
-void movmentS(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
-{
 
-    campo[y][x]=" ";
-    campo[y+1][x]="a"; 
-    for(int j=0;j<20;j++)
-    {
-        for(int i=0; i<20;i++)
-        {
-          if(campo[j][i]=="#"|| campo[j][i]=="a"|| campo[j][i]=="p")
-                cout<<campo[j][i];
-          else
-                cout<<" ";
-        }       
-        cout<<endl;
-    }
-    
-}
-void movmentA(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
-{
-
-    campo[y][x]=" ";
-    campo[y][x-1]="a"; 
-    for(int j=0;j<20;j++)
-    {
-        for(int i=0; i<20;i++)
-        {
-          if(campo[j][i]=="#"|| campo[j][i]=="a" || campo[j][i]=="p")
-                cout<<campo[j][i];
-          else
-                cout<<" ";
-        }       
-        cout<<endl;
-    }
-    
-}
-void movmentD(int x, int y, string campo[20][20], int numrandom1, int numrandom2 )
-{
-
-    campo[y][x]=" ";
-    campo[y][x+1]="a"; 
-    for(int j=0;j<20;j++)
-    {
-        for(int i=0; i<20;i++)
-        {
-          if(campo[j][i]=="#"|| campo[j][i]=="a"|| campo[j][i]=="p")
-                cout<<campo[j][i];
-          else
-                cout<<" ";
-        }       
-        cout<<endl;
-    }
-    
-}
 bool gameover(string matrix[20][20]) {
     bool controllo=true;
     for (int i = 0; i <19; i++)
@@ -84,102 +19,142 @@ bool gameover(string matrix[20][20]) {
         }
     }
     return controllo;
-    }
-bool controllomela1(string campo[20][20], int &num, int &num2)
+}
+
+
+// Se colpisci una mela allora ritorni true
+bool controllomela1(string campo[20][20], int riga, int colonna)
 {
-    if(campo[num][num2]!="p")
+    if(campo[riga][colonna]=="O")
         return true;
     else
         return false;
 }
-void nuovamela(string campo[20][20], int &numrandom1, int &numrandom2)
+void nuovamela(string campo[20][20])
 {
-    numrandom1= rand()%18;
-    numrandom2= rand()%18;
-    campo[numrandom1][numrandom2]="p";
+    campo[rand()%18][rand()%18]="O";
+    // campo[7][12]="O";
 }
 
-string inputMove() {
-	string move;
-	if (cin >> move) 
-        return move;
+
+void movimento(string matrix[][20], char direzione, int & x, int & y)
+{
+    // Ripristino il bordo
+    for (int i = 0; i <20; i++)
+    {
+        for (int j = 0; j <20; j++)
+        {
+            if(matrix[i][j]=="a")
+                matrix[i][j]=" ";
+        }
+        matrix[i][0] = "#";
+        matrix[i][19] = "#";
+    }
+    matrix[x][y] = " ";
+    for (int i = 0; i < 20; i++)
+    {
+        matrix[0][i]="#";
+        matrix[19][i]="#";
+    }
+
+    // Muovo a seconda della direzione
+    if(direzione=='w')
+    {
+        x--;
+        if(controllomela1(matrix, x, y)==true)
+            nuovamela(matrix);
+        matrix[x][y]="a";
+    }
+    else if(direzione=='s')
+    {
+        x++;
+        if(controllomela1(matrix, x, y)==true)
+            nuovamela(matrix);
+        matrix[x][y]="a";
+    }
+    else if(direzione=='a')
+    {
+        y--;
+        if(controllomela1(matrix, x, y)==true)
+            nuovamela(matrix);
+        matrix[x][y]="a";
+    }
+    else if(direzione=='d')
+    {
+        y++;
+        if(controllomela1(matrix, x, y)==true)
+            nuovamela(matrix);
+        matrix[x][y]="a";
+    }
+}
+
+string inputMossa() {
+    string mossa;
+    if (cin >> mossa)
+        return mossa;
+}
+
+
+void stampa(string m[][20]) {
+    system("cls");
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 20; j++)
+            cout << m[i][j];
+        cout << endl;
+    }
+}
+
+
+void cambiaDirezione(char & direzione, string mossa) {
+    if (mossa == "w")
+        direzione = 'w';
+    else if (mossa == "s")
+        direzione = 's';
+    else if (mossa == "a")
+        direzione = 'a';
+    else if (mossa == "d")
+        direzione = 'd';
 }
 
 
 int main()
 {
+    srand(time(NULL));
     string campo[20][20];
     int x=9;
     int y=9;
-    int j;
-    int numrandom1; //mela riga
-    numrandom1= rand()%18;
-    int numrandom2; //mela riga
-    numrandom2= rand()%18;
+    char direzione='w'; // Variabile che ha il valore w quando si muove in alto, s quando si muove in basso, a quando si muove a sinistra, d quando si muove a destra
+    for (int i = 0; i <20; i++)
+    {
+        for (int j = 0; j <20; j++)
+            campo[i][j]=" ";
+    }
     for(int i=0; i<20;i++)
     {
         campo[0][i]="#";
         campo[i][0]="#";
         campo[19][i]="#";
         campo[i][19]="#";
-        campo[9][9]="a";
+        campo[x][y]="a";
     }
-    campo[numrandom1][numrandom2]="p";
-    for(int j=0;j<20;j++)
-    {
-        for(int i=0; i<20;i++)
-        {
-                if(campo[j][i]=="#"|| campo[j][i]=="a"|| campo[j][i]=="p")
-                    cout<<campo[j][i];
-                else
-                    cout<<" ";
-        }    
-        cout<<endl;
-    }
+
+    // Genero la prima mela
+    nuovamela(campo);
+    stampa(campo);
     string num;
-    
 
     while(gameover(campo)==true) //cin
     {
-
-        auto input = async(launch::async, inputMove);
+    	// Eseguo la funzione inputMove in modo asincrono
+	    auto input = std::async(std::launch::async, inputMossa);
         system("cls");
-        while (input.wait_for(0.15) != std::future_status::ready) {
-            // Si muove da solo
-        }
-        num = input.get();
-        if(num=="w")
-        {
-            movmentW(x, y, campo, numrandom1, numrandom2);
-            y=y-1;
-        }
-        else
-        {
-            if(num=="s")
-            {
-                movmentS(x, y, campo, numrandom1, numrandom1);
-                y=y+1;
-            }
-            else
-            {
-                if(num=="a")
-                {
-                    movmentA(x, y, campo, numrandom1, numrandom1);
-                    x=x-1;
-                }
-                else
-                {
-                    if(num=="d")
-                    {
-                        movmentD(x, y, campo, numrandom1, numrandom1);
-                        x=x+1;
-                    }
-                }
-            }
-        }
-        if(controllomela1(campo, numrandom1, numrandom2)==true)
-            nuovamela(campo, numrandom1, numrandom2);
-       
+		using namespace std::literals;
+		while (input.wait_for(0.2s) != std::future_status::ready) {
+			movimento(campo, direzione, x, y);
+            stampa(campo);
+		}
+		num = input.get(); // Assegnamo a num la variabile presa da inputMossa in maniera asincrona
+        cambiaDirezione(direzione, num);
     }
     cout<<"gameover";   
 }
