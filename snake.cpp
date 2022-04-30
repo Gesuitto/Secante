@@ -4,15 +4,16 @@
 #include <chrono>
 #include <time.h>
 // g++ snake.cpp -o snake.exe -std=c++2a
+// g++ -S snake.cpp -std=c++2a
 const char SNAKE = '$';
 const char BORDER = '#';
 const char APPLE = '0';
 
 
-void gameover(char matrix[20][20]) {
+void gameover(char matrix[20][20], unsigned long long points) {
     for (int i = 0; i <20; i++) {
         if (matrix[i][0] == SNAKE || matrix[i][19] == SNAKE || matrix[0][i] == SNAKE || matrix[19][i] == SNAKE) {
-            std::cout << "Game over!" << std::endl;
+            std::cout << "Game over!" << std::endl << "Your points: " << points << std::endl;
             exit(0);
         }
     }
@@ -34,30 +35,20 @@ void addApple(char field[20][20], int x, int y) {
 }
 
 
-void move(char matrix[][20], char direction, int & x, int & y) {
+void move(char matrix[][20], char direction, int & x, int & y, unsigned long long points) {
     matrix[x][y] = ' ';
-    if (direction == 'w') {
+    if (direction == 'w')
         x--;
-        if (appleCheck(matrix, x, y))
-            addApple(matrix, x, y);
-        matrix[x][y]=SNAKE;
-    } else if (direction == 's') {
-        x++;
-        if(appleCheck(matrix, x, y))
-            addApple(matrix, x, y);
-        matrix[x][y]=SNAKE;
-    } else if (direction == 'a') {
+    else if (direction == 's')
+        x++;        
+    else if (direction == 'a')
         y--;
-        if(appleCheck(matrix, x, y))
-            addApple(matrix, x, y);
-        matrix[x][y]=SNAKE;
-    } else if (direction == 'd') {
+    else if (direction == 'd')
         y++;
-        if(appleCheck(matrix, x, y))
-            addApple(matrix, x, y);
-        matrix[x][y]=SNAKE;
-    }
-    gameover(matrix);
+    if(appleCheck(matrix, x, y))
+        addApple(matrix, x, y);
+    matrix[x][y]=SNAKE;
+    gameover(matrix, points);
 }
 
 
@@ -92,32 +83,33 @@ void changeDirection(char & direction, std::string move) {
 
 int main() {
     srand(time(NULL));
+    unsigned long long points = 0;
     char field[20][20];
-    int x=9;
-    int y=9;
-    char direction='w';
+    int x=9, y=9;
+    char direction = 'w';
     for (int i = 0; i <20; i++) {
         for (int j = 0; j <20; j++)
-            field[i][j]=' ';
+            field[i][j] = ' ';
     }
-    for (int i=0; i<20;i++) {
-        field[0][i]=BORDER;
-        field[i][0]=BORDER;
-        field[19][i]=BORDER;
-        field[i][19]=BORDER;
-        field[x][y]=SNAKE;
+    for (int i=0; i<20; i++) {
+        field[0][i] = BORDER;
+        field[i][0] = BORDER;
+        field[19][i] = BORDER;
+        field[i][19] = BORDER;
+        field[x][y] = SNAKE;
     }
 
     addApple(field, x, y);
     print(field);
 
-    while(true) {
+    while (true) {
 	    auto input = std::async(std::launch::async, inputMove);
 		using namespace std::literals;
 		while (input.wait_for(0.2s) != std::future_status::ready) {
-			move(field, direction, x, y);
+			move(field, direction, x, y, points);
             print(field);
 		}
         changeDirection(direction, input.get());
+        points++;
     }
 }
