@@ -11,10 +11,10 @@ std::string APPLE="0";
 
 bool gameover(std::string matrix[20][20]) {
     for (int i = 0; i <20; i++) {
-        if (matrix[i][0] == SNAKE || matrix[i][19] == SNAKE)
-            return false;
-        if (matrix[0][i] == SNAKE || matrix[19][i] == SNAKE)
-            return false;
+        if (matrix[i][0] == SNAKE || matrix[i][19] == SNAKE || matrix[0][i] == SNAKE || matrix[19][i] == SNAKE) {
+            std::cout << "Game over!" << std::endl;
+            exit(0);
+        }
     }
     return true;
 }
@@ -58,10 +58,7 @@ void move(std::string matrix[][20], char direction, int & x, int & y) {
             addApple(matrix, x, y);
         matrix[x][y]=SNAKE;
     }
-    if (!gameover(matrix)) {
-        std::cout << "Game over!" << std::endl;
-        exit(0);
-    }
+    gameover(matrix);
 }
 
 
