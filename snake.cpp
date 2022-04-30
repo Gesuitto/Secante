@@ -4,12 +4,12 @@
 #include <chrono>
 #include <time.h>
 // g++ snake.cpp -o snake.exe -std=c++2a
-std::string SNAKE="$";
-std::string BORDER="#";
-std::string APPLE="0";
+const char SNAKE = '$';
+const char BORDER = '#';
+const char APPLE = '0';
 
 
-void gameover(std::string matrix[20][20]) {
+void gameover(char matrix[20][20]) {
     for (int i = 0; i <20; i++) {
         if (matrix[i][0] == SNAKE || matrix[i][19] == SNAKE || matrix[0][i] == SNAKE || matrix[19][i] == SNAKE) {
             std::cout << "Game over!" << std::endl;
@@ -19,12 +19,12 @@ void gameover(std::string matrix[20][20]) {
 }
 
 
-bool appleCheck(std::string field[20][20], int x, int y) {
+bool appleCheck(char field[20][20], int x, int y) {
     return (field[x][y] == APPLE);
 }
 
 
-void addApple(std::string field[20][20], int x, int y) {
+void addApple(char field[20][20], int x, int y) {
     int a, b;
     do {
         a = 1+rand()%17;
@@ -34,8 +34,8 @@ void addApple(std::string field[20][20], int x, int y) {
 }
 
 
-void move(std::string matrix[][20], char direction, int & x, int & y) {
-    matrix[x][y] = " ";
+void move(char matrix[][20], char direction, int & x, int & y) {
+    matrix[x][y] = ' ';
     if (direction == 'w') {
         x--;
         if (appleCheck(matrix, x, y))
@@ -68,7 +68,7 @@ std::string inputMove() {
 }
 
 
-void print(std::string m[][20]) {
+void print(char m[][20]) {
     system("cls");
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 20; j++)
@@ -92,13 +92,13 @@ void changeDirection(char & direction, std::string move) {
 
 int main() {
     srand(time(NULL));
-    std::string field[20][20];
+    char field[20][20];
     int x=9;
     int y=9;
     char direction='w';
     for (int i = 0; i <20; i++) {
         for (int j = 0; j <20; j++)
-            field[i][j]=" ";
+            field[i][j]=' ';
     }
     for (int i=0; i<20;i++) {
         field[0][i]=BORDER;
