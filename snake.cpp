@@ -3,15 +3,13 @@
 #include <future>
 #include <chrono>
 #include <time.h>
-#include <stdlib.h>
-using namespace std;
 // g++ snake.cpp -o snake.exe -std=c++2a
 std::string SNAKE="$";
 std::string BORDER="#";
 std::string APPLE="0";
 
 
-bool gameover(string matrix[20][20]) {
+bool gameover(std::string matrix[20][20]) {
     for (int i = 0; i <20; i++) {
         if (matrix[i][0] == SNAKE || matrix[i][19] == SNAKE)
             return false;
@@ -22,12 +20,12 @@ bool gameover(string matrix[20][20]) {
 }
 
 
-bool appleCheck(string field[20][20], int x, int y) {
+bool appleCheck(std::string field[20][20], int x, int y) {
     return (field[x][y] == APPLE);
 }
 
 
-void addApple(string field[20][20], int x, int y) {
+void addApple(std::string field[20][20], int x, int y) {
     int a, b;
     do {
         a = 1+rand()%17;
@@ -37,7 +35,7 @@ void addApple(string field[20][20], int x, int y) {
 }
 
 
-void move(string matrix[][20], char direction, int & x, int & y) {
+void move(std::string matrix[][20], char direction, int & x, int & y) {
     matrix[x][y] = " ";
     if (direction == 'w') {
         x--;
@@ -60,27 +58,31 @@ void move(string matrix[][20], char direction, int & x, int & y) {
             addApple(matrix, x, y);
         matrix[x][y]=SNAKE;
     }
-}
-
-
-string inputMove() {
-    string move;
-    if (cin >> move)
-        return move;
-}
-
-
-void print(string m[][20]) {
-    system("cls");
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 20; j++)
-            cout << m[i][j];
-        cout << endl;
+    if (!gameover(matrix)) {
+        std::cout << "Game over!" << std::endl;
+        exit(0);
     }
 }
 
 
-void changeDirection(char & direction, string move) {
+std::string inputMove() {
+    std::string move;
+    if (std::cin >> move)
+        return move;
+}
+
+
+void print(std::string m[][20]) {
+    system("cls");
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 20; j++)
+            std::cout << m[i][j];
+        std::cout << std::endl;
+    }
+}
+
+
+void changeDirection(char & direction, std::string move) {
     if (move == "w")
         direction = 'w';
     else if (move == "s")
@@ -94,7 +96,7 @@ void changeDirection(char & direction, string move) {
 
 int main() {
     srand(time(NULL));
-    string field[20][20];
+    std::string field[20][20];
     int x=9;
     int y=9;
     char direction='w';
