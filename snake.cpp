@@ -9,14 +9,13 @@ std::string BORDER="#";
 std::string APPLE="0";
 
 
-bool gameover(std::string matrix[20][20]) {
+void gameover(std::string matrix[20][20]) {
     for (int i = 0; i <20; i++) {
         if (matrix[i][0] == SNAKE || matrix[i][19] == SNAKE || matrix[0][i] == SNAKE || matrix[19][i] == SNAKE) {
             std::cout << "Game over!" << std::endl;
             exit(0);
         }
     }
-    return true;
 }
 
 
@@ -112,7 +111,7 @@ int main() {
     addApple(field, x, y);
     print(field);
 
-    while(gameover(field)) {
+    while(true) {
 	    auto input = std::async(std::launch::async, inputMove);
 		using namespace std::literals;
 		while (input.wait_for(0.2s) != std::future_status::ready) {
